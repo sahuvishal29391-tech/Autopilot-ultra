@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Autopilot Ultra — Control</title>
+<style>body{font-family:Inter,system-ui;background:#0b1221;color:#e8eef8;padding:18px}button{background:#06c167;color:#021a12;padding:12px 18px;border-radius:10px;border:0;font-weight:700}pre{background:#07101a;padding:12px;border-radius:8px}</style>
+</head>
+<body>
+  <h1>Autopilot Ultra — Control</h1>
+  <p>Generate batch videos (server runs required).</p>
+  <div>
+    <label>Category: <input id="cat" value="gym-sigma"/></label>
+    <label>Count: <input id="count" type="number" value="5"/></label>
+    <button onclick="gen()">Generate Batch</button>
+  </div>
+  <pre id="out">Status: ready</pre>
+<script>
+async function gen(){
+  document.getElementById('out').textContent='Generating...';
+  const cat=document.getElementById('cat').value; const count=document.getElementById('count').value;
+  try{
+    const res=await fetch('/.netlify/functions/generate_batch?category='+encodeURIComponent(cat)+'&count='+encodeURIComponent(count));
+    const j=await res.json();
+    document.getElementById('out').textContent=JSON.stringify(j,null,2);
+  }catch(e){document.getElementById('out').textContent='Error: '+e}
+}
+</script>
+</body>
+</html>
